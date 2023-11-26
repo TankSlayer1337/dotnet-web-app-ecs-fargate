@@ -6,14 +6,14 @@ This project showcases how to relatively easily setup an ASP.NET Core 6 Web API 
 
 This document lists the steps and configurations taken to produce this project.
 
-## Project Setup Steps
+## Reproduce this Project - Step by Step
 Prerequisites: [Docker Desktop](https://www.docker.com/products/docker-desktop/), [AWS CDK Toolkit](https://docs.aws.amazon.com/cdk/v2/guide/cli.html), Visual Studio, locally configured AWS credentials, a CDK Bootstrapped environment (in this project, eu-north-1 Stockholm is used).
 
 1. Create GitHub repository with [Visual Studio gitignore](https://github.com/github/gitignore/blob/main/VisualStudio.gitignore) and README.
 
 2. Create infra directory. Run `cdk init app --language=typescript` in the infra directory.
 
-3. Create src directory. Inside of the src directory, create a new ASP.NET Core project using Visual Studio. Here, the ASP.NET Core Web API template was used. This creates the classic WeatherApp.
+3. Create src directory. Inside of the src directory, create a new ASP.NET Core project using Visual Studio. Here, the ASP.NET Core Web API template was used. Make sure to deselect the "Configure for HTTPS" option. This creates the classic WeatherApp.
 
 4. In the src directory, run `docker init`. Follow the prompts.
 
@@ -25,4 +25,8 @@ For official ASP.NET Core images, starting with .NET 8, the app will be configur
 6. Update [infra.ts](infra/bin/infra.ts) and [infra-stack.ts](infra/lib/infra-stack.ts) to be as in this project.
 
 ## Deployment
-After having followed the project setup steps (or simply having cloned this repository), the application can be deployed. To deploy the app using CDK, move into the infra directory and run `cdk deploy --all`. Enter y when prompted.
+After having followed the project setup steps (or simply having cloned this repository), the application can be deployed. To deploy the app using CDK, move into the infra directory and run `cdk deploy --all`. Enter y when prompted. The deployment can take some time.  
+When the deployment is done, among the Outputs the WeatherForecastURL will be listed. Open the link to verify that the app generates a weather forecast response.  
+
+## Cleanup
+To clean up, either delete the created cloudformation stack in the AWS console, or run `cdk destroy --all` while inside the infra directory and enter y when prompted.
