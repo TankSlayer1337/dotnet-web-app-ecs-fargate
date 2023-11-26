@@ -13,16 +13,16 @@ Prerequisites: [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
 2. Create infra directory. Run `cdk init app --language=typescript` in the infra directory.
 
-3. Create src directory. Inside of the src directory, create a new ASP.NET Core project using Visual Studio. Here, the ASP.NET Core Web API template was used. Make sure to deselect the "Configure for HTTPS" option. This creates the classic WeatherApp.
+3. Update [infra.ts](infra/bin/infra.ts) and [infra-stack.ts](infra/lib/infra-stack.ts) to be as in this project.
 
-4. In the src directory, run `docker init`. Follow the prompts.
+4. Create src directory. Inside of the src directory, create a new ASP.NET Core project using Visual Studio. Here, the ASP.NET Core Web API template was used. Make sure to deselect the "Configure for HTTPS" option. This creates the classic WeatherApp.
 
-5. The created Dockerfile will make it so that the app will run under a non-privileged user, i.e. a non-root user. This comes with [limitations](https://docs.docker.com/engine/security/rootless/#known-limitations), one of which is available ports. The ASP.NET Core 6 official image makes the app listen to port 80 by default, which is a privileged port and not allowed to use for a non-root user. All ports < 1024 are priviliged.  
+5. In the src directory, run `docker init`. Follow the prompts.
+
+6. The created Dockerfile will make it so that the app will run under a non-privileged user, i.e. a non-root user. This comes with [limitations](https://docs.docker.com/engine/security/rootless/#known-limitations), one of which is available ports. The ASP.NET Core 6 official image makes the app listen to port 80 by default, which is a privileged port and not allowed to use for a non-root user. All ports < 1024 are priviliged.  
 To change this, [Program.cs](src/WeatherApp/WeatherApp/Program.cs) in the WeatherApp can be updated so that the Kestrel server listens on another port, e.g. 8080. [infra-stack.ts](infra/lib/infra-stack.ts) also needs to be updated (line 34) since the default containerPort in the taskImageOptions is 80.  
 If you want to be able to use the [compose.yaml](compose.yaml) file created during docker init to test running the container locally (by running `docker compose up --build` in the project root directory), the container port in this file needs to be updated as well. In this project, both host and container ports has been set to 8080.  
 For official ASP.NET Core images, starting with .NET 8, the app will be configured to listen on port 8080 by default: [link](From https://hub.docker.com/_/microsoft-dotnet-samples/).
-
-6. Update [infra.ts](infra/bin/infra.ts) and [infra-stack.ts](infra/lib/infra-stack.ts) to be as in this project.
 
 ## Deployment
 After having followed the project setup steps (or simply having cloned this repository), the application can be deployed. To deploy the app using CDK, move into the infra directory and run `cdk deploy --all`. Enter y when prompted. The deployment can take some time.  
