@@ -15,7 +15,7 @@ ARG TARGETARCH
 
 COPY . /source
 
-WORKDIR /source/src/WeatherApp/WeatherApp
+WORKDIR /source/WeatherApp/WeatherApp
 
 # Build the application.
 # Leverage a cache mount to /root/.nuget/packages so that subsequent builds don't have to re-download packages.
